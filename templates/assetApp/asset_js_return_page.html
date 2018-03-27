@@ -1,0 +1,63 @@
+<div class="x_content">
+  <table id="datatable" class="table table-striped table-bordered">
+      <tr>
+          <th> 序号  </th>
+          <th> IP   </th>
+          <th> 主机名    </th>
+          <th> 所属项目  </th>
+          <th> 操作系统  </th>
+          <th> CPU    </th>
+          <th> 内存(G) </th>
+          <th> 硬盘    </th>
+          <th> 操作    </th>
+          <th> 备注    </th>
+      </tr>
+      {% for asset in asset_management_list %}
+          <tr>
+              <td> {{ asset.id }}</td>
+              <td> {{ asset.ip }}</td>
+              <td> {{ asset.host_name }}</td>
+              <td> {{ asset.project }}</td>
+              <td> {{ asset.system }}</td>
+              <td> {{ asset.cpu }}</td>
+              <td> {{ asset.memory }}</td>
+              <td> {{ asset.hard }}</td>
+              <td>
+                  <a href="{% url 'asset:asset' option='edit_asset' id=asset.id %}"><button>编辑</button></a>
+                  <a href="{% url 'asset:asset' option='del_asset' id=asset.id %}" onClick="delete_confirm" > <button>删除</button></a>
+              </td>
+              <td> {{ asset.remark }}</td>
+          </tr>
+      {% empty %}
+          <td>未查询到资产</td>
+      {% endfor %}
+    </table>
+
+  <div class="pages">
+        展示行数：
+        <select name="" id="">
+            {% if page_condition.pagenumber >= 10 %}
+            <option value="{{ page_condition.pagenumber }}" selected = "selected">{{ page_condition.pagenumber }}</option>
+            {% endif %}
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+        </select>
+
+        {% if asset_management_list %}
+            <!-- 如果当前页还有上一页，显示一个上一页的按钮 -->
+            {% if asset_management_list.has_previous %}
+            <a href="?page={{ asset_management_list.previous_page_number }}&asset_search={{ page_condition.asset_search }}&pagenumber={{ page_condition.pagenumber }}">上一页</a>
+            {% endif %}
+            <!-- 显示当前页面信息 -->
+            第 {{ asset_management_list.number }} 页 / 共 {{ asset_management_list.paginator.num_pages }} 页
+            <!-- 如果当前页还有下一页，显示一个下一页的按钮 -->
+            {% if asset_management_list.has_next %}
+            <a href="?page={{ asset_management_list.next_page_number }}&asset_search={{ page_condition.asset_search }}&pagenumber={{ page_condition.pagenumber }}">下一页</a>
+            {% endif %}
+        {% endif %}
+    </div>
+ </div>
+
+

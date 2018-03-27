@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head_content %}
+  <title>hellow login! | </title>
+  <link href="{% static 'publicApp/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'publicApp/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'publicApp/css/green.css' %}" rel="stylesheet">
+  <link href="{% static 'publicApp/css/jqvmap.min.css' %}" rel="stylesheet"/>
+  <link href="{% static 'publicApp/css/custom.min.css' %}" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="{% static 'publicApp/css/xh-login-yzm.css' %}">
+  <script type="text/javascript" src="{% static 'publicApp/js/jquery_yzm.js' %}"></script>
+
+{% endblock head_content %}
+
+{% block body_content %}
+<body class="login">
+  <div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+
+    <div class="login_wrapper">
+      <div class="animate form login_form">
+        <section class="login_content">
+          <form>
+            <h1>Login Form</h1>
+            <div><input type="text" name="username" id="login_username" class="form-control" placeholder="username" required="" autofocus=""></div>
+            <div><input type="password" name="password" id="login_password" class="form-control" placeholder="password" required=""></div>
+            <!-- 设置验证码开始 -->
+            <dd class="yanzhengma">
+                <span id="test" class="fl">验证码：</span>
+                <div><input type="text" class="fl" id="verify_code" name="verify_code" />
+                  <input type="hidden" id="verify_code_key" name="verify_code_key" value="{{ login_info_list.code_name }}" ></div>
+                <img id="img_idaaaa" src="{{ login_info_list.code_img_path }}/{{ login_info_list.code_name }}.png"/>
+                <a class="replase">换一张</a>
+            </dd>
+            <p class="yanzhengmahide" style="display: none"></p>
+            <!-- 设置验证码结束 -->
+
+            <div>
+              <input type="button" value="Sign in" class="btn btn-lg btn-primary btn-block denglu" />
+              <!--<a class="btn btn-default submit" href="{% url 'public:index' %}">Sign in</a>-->
+              <a class="reset_pass" href="#">忘记密码?</a>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="separator">
+              <p class="change_link">New to site?<a href="#signup" class="to_register"> 创建账户 </a></p>
+            <div class="clearfix"></div>
+            <br/>
+              <div>
+                <h1><i class="fa fa-paw"></i> 运维管理平台</h1>
+                <p>©2018 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <!-- 注册页面 -->
+      <div id="register" class="animate form registration_form">
+        <section class="login_content">
+          <form>
+            <h1>Create Account</h1>
+            <div><input type="text" class="form-control" placeholder="Username" required="" /></div>
+            <div><input type="email" class="form-control" placeholder="Email" required="" /></div>
+            <div><input type="password" class="form-control" placeholder="Password" required="" /></div>
+            <div><a class="btn btn-default submit" href="../index.html">提交</a></div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
+              <p class="change_link">已有账号 ?<a href="{% url 'public:login' %}" class="to_register"> Log in </a></p>
+              <div class="clearfix"></div><br />
+              <div>
+                <h1><i class="fa fa-paw"></i> 运维管理平台</h1>
+                <p>©2018 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock body_content %}
+
+

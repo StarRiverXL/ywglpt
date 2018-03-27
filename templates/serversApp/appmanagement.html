@@ -1,0 +1,126 @@
+{% extends 'base1.html' %}
+{% load staticfiles %}
+
+{% block page_content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>应用管理 <small>详情页</small></h2>
+                        {% include 'base_content_head1.html' %}
+                    </div>
+
+                    <div style="padding: 0 5px 6px;float: left;clear: both;margin-top: 5px">
+                        <p class="text-muted font-13 m-b-30">应用管理可以对现有应用进行管理，进行启动、停止、重启等操作，方便管理。</p>
+                    </div>
+
+                    <div class="x_content">
+                        <table id="datatable" class="table table-striped table-bordered">
+                        <tr>
+                            <th> 应用名称  </th>
+                            <th> 应用编码  </th>
+                            <th> 运维人员    </th>
+                            <th> 状态  </th>
+                            <th> 外网IP  </th>
+                            <th> 内网IP      </th>
+                            <th> 应用部署路径  </th>
+                            <th> 部署名称  </th>
+                            <th> 监听端口   </th>
+                            <th> 访问地址   </th>
+                            <th> 修改时间   </th>
+                            <th> 应用操作   </th>
+                            <th> 验证码 </th>
+                        </tr>
+                        {% for app in app_list %}
+                            <tr>
+                                <td> {{ app.appName }}</td>
+                                <td> {{ app.code }}</td>
+                                <td> {{ app.operationsPersonnel }}</td>
+                                <td> {{ app.get_state_display }}</td>
+                                <td id="ipOut"> {{ app.ipOut }}</td>
+                                <td id="ipIn"> {{ app.ipIn }}</td>
+                                <td> {{ app.path }}</td>
+                                <td> {{ app.deployName }}</td>
+                                <td> {{ app.port }}</td>
+                                <td> <a href="{{ app.urlLink }}" target="_blank">{{ app.urlLink }}</a></td>
+                                <td> {{ app.modified_time }}</td>
+                                <td>
+                                    <button  class='start' value="start"> start </button>
+                                    <button class='stop' value="stop"> stop </button>
+                                    <button class='restart' onclick="appoption(this)" value="restart"> restart </button>
+                                    <td><input class="appOptCodeInput" style="display:none;width: 100px;height: auto;" placeholder="请输入验证码" required></td>
+                                </td>
+                            </tr>
+                            {% empty %}
+                                <td> 未查询到应用，请联系管理员 </td>
+                        {% endfor %}
+                        </table>
+
+                        <script>
+                            window.onload=function(){
+                                var aBtn=document.querySelectorAll('.start');
+                                var aStop=document.querySelectorAll('.stop');
+                                var aRestart=document.querySelectorAll('.restart');
+                                var aInput=document.querySelectorAll('.appOptCodeInput');
+                                loop(aBtn); loop(aStop); loop(aRestart);
+                                function loop(arr){
+                                    for(var i=0; i<arr.length; i++){
+                                        arr[i].index=i;
+                                        arr[i].onclick=function(){
+                                            inputCode = aInput[this.index];
+                                            inputCodeValue = aInput[this.index].value;
+                                            appoption(this, inputCodeValue);  // 传入验证码值，通过后台做判断
+                                        }
+                                    }
+                                }
+
+                                function appoption(opt, code) {
+                                    tr = opt.parentNode.parentNode;
+                                    personnel = tr.cells[2].childNodes[0].wholeText;   // 运维人员
+                                    ipOut = tr.cells[4].childNodes[0].wholeText;  // .data 一样的结果
+                                    ipIn =tr.cells[5].childNodes[0].wholeText;
+                                    path = tr.cells[6].childNodes[0].wholeText;
+                                    options = opt.value;     // 操作动作
+                                    console.log("参数日志", options, ipOut, ipIn, path, personnel);
+                                    var xmlhttp;
+                                    if (window.XMLHttpRequest) {
+                                        xmlhttp=new XMLHttpRequest();  //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                                    }
+                                    else {
+                                        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");  // IE6, IE5 浏览器执行代码
+                                    }
+                                    xmlhttp.open("GET","{% url 'servers:appopt' option='action_get' %}?&ipOut="+ipOut+"&ipIn="+ipIn+"&path="+path+"&personnel="+personnel+"&opt="+options+"&code="+inputCodeValue, true);
+                                    xmlhttp.send();
+                                    xmlhttp.onreadystatechange=function() {
+                                    console.log(xmlhttp.responseText);
+                                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                                    //	document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+                                    //  var code=prompt("请输入你的验证码: ","");
+                                        var json= eval("("+xmlhttp.responseText+")");   // 获取用户返回的json数据
+                                        alert(json.result);
+                                        if (json.input){
+                                            inputCode.style.cssText = "display:inline;width: 90px;height: auto;";
+                                        }
+                                        else {
+                                            inputCode.style.cssText = "display:none";
+                                        }
+                                        }
+                                    };
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock page_content %}
+
+

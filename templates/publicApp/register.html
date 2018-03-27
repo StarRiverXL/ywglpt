@@ -1,0 +1,87 @@
+{% load staticfiles %}
+
+{% block head_content %}
+    <link href="{% static 'publicApp/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'publicApp/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'publicApp/css/green.css' %}" rel="stylesheet">
+    <link href="{% static 'publicApp/css/jqvmap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'publicApp/css/custom.min.css' %}" rel="stylesheet">
+{% endblock head_content %}
+
+{% block body_content %}
+<div style="padding: 10% 30% 30% 30%">
+    <!-- page content -->
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h1>用户注册界面</h1>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="x_content">
+                            <form class="form-horizontal form-label-left" novalidate>
+                                <p>请如实填写个人信息,相关敏感信息将会做保密处理，如有需要可联系管理员</p>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">用户名 <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" required="required" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label for="password" class="control-label col-md-3">密码 <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="password" type="password" name="password" data-validate-length="6,8" class="form-control col-md-7 col-xs-12" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                  <label for="password" class="control-label col-md-3">确认密码 <span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                      <input id="password3" type="password" name="password" data-validate-length="6,8" class="form-control col-md-7 col-xs-12" required="required">
+                                  </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="email" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">电话 <span class="required">*</span> </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="tel" id="telephone" name="phone" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+
+                                <div class="ln_solid"></div>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <!--<button type="submit" class="btn btn-primary">已有用户、去登陆</button>-->
+                                        <button id="send" type="submit" class="btn btn-success">立即注册</button>
+                                    </div>
+                                    <br>
+                                    <a href="{% url 'public:index'%}">已有用户、去登陆</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body_content %}
+
+
+
+
+

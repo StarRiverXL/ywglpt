@@ -1,0 +1,118 @@
+{% extends 'base1.html' %}
+{% load staticfiles %}
+{% load blog_tags %}
+
+{% block head_content2 %}
+    <title>应用运维资料库</title>
+    <link rel="stylesheet" href="{% static 'ywdocumentApp/css/custom.css' %}">
+{% endblock head_content2 %}
+
+{% block page_content %}
+
+<div class="right_col">
+    <!--<div class="clearfix"></div>-->
+    <div class="page-title">
+        <div class="title_left">
+            <h3><a href="{% url 'ywdocument:index' %}"> 应用运维资料 </a></h3>
+        </div>
+        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <form role="search" method="get" id="searchform" action="{% url 'ywdocument:search' %}">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search for..." required>
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--<div class="clearfix"></div>-->
+<dir style="width: 100%;
+    padding: 10px 17px;
+    display: inline-block;
+    background: #fff;
+    border: 2px solid #E6E9ED;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    opacity: 1;
+    transition: all .2s ease">
+
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+                {% block main %}
+                {% endblock main %}
+            </main>
+            <aside style="padding-left: 80%;">
+                {% block toc %}
+                {% endblock toc %}
+
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">最新文档</h3>
+                    {% get_recent_posts as recent_post_list %}
+                    <ul>
+                        {% for post in recent_post_list %}
+                            <li>
+                                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                            </li>
+                        {% empty %}
+                            暂无资料！
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="widget widget-archives">
+                    <h3 class="widget-title">时间轴</h3>
+                    {% archives as date_list %}
+                    <ul>
+                    {% for date in date_list %}
+                        <li>
+                            <a href="{% url 'ywdocument:archives' date.year date.month %}">
+                            {{ date.year }} 年 {{ date.month }} 月</a>
+                        </li>
+                        {% empty %}
+                            暂无归档！
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="widget widget-category">
+                    <h3 class="widget-title">我的分类</h3>
+                    {% get_categories as category_list %}
+                    <ul>
+                        {% for category in category_list %}
+                        <li>
+                            <a href="{% url 'ywdocument:category' category.pk %}">
+                                {{ category.name }} <span class="post-count">({{ category.num_posts }})</span></a>
+                        </li>
+                        {% empty %}
+                            暂无分类！
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="widget widget-tag-cloud">
+                    <h3 class="widget-title">我的标签</h3>
+                    {% get_tags as tag_list %}
+                    <ul>
+                        {% for tag in tag_list %}
+                            <li>
+                            <a href="{% url 'ywdocument:tag' tag.pk %}">{{ tag.name }}</a>
+                            </li>
+                        {% empty %}
+                            暂无标签！
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </aside>
+        </div>
+    </div>
+</div>
+</dir>
+</div>
+
+{% endblock page_content %}

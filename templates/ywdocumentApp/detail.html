@@ -1,0 +1,36 @@
+{% extends 'base2.html' %}
+
+{% block main %}
+<article class="post post-{{ post.pk }}">
+    <header class="entry-header">
+        <h3><a href="#">标题：{{ post.title }}</a> <a href="{% url 'ywdocument:index' %}?page={{ page.page }}" style="float: right">返回</a></h3><br>
+        <a href="#">所属分类：{{ post.category.name }}</a> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#"><time class="entry-date" datetime="{{ post.created_time }}">创建时间：{{ post.created_time }}</time></a> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#">创建人：{{ post.author }}</a> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#">所属标签： &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        {% for tag in post.tags.all %}
+            {{ tag.name }}
+        {% endfor %}
+        </a>
+    </header>
+    <br>
+    <div class="entry-content clearfix">
+        <h3>内容详情：<br></h3>
+            {{ post.body | safe }}
+        {% if post.img %}
+            图片说明：{{ post.img_name }}<br>
+            <img style="width: 500px;height: 300px" src="{{ post.img.url }}" />
+        {% endif %}
+        <br>
+        {% if post.file %}
+            <a href="http://127.0.0.1:8000{{ post.file.url }}">查看附件说明</a>
+        {% endif %}
+        <br><br>
+    </div>
+</article>
+{% endblock main %}
+
+
+
+
+

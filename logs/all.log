@@ -1,0 +1,3 @@
+[2018-03-22 18:06:41,350] [INFO] [D:\workspace\ywglpt\publicApp\views.py indexpage views line:142] 进入网站首页
+[2018-03-22 18:06:41,351] [INFO] [D:\workspace\ywglpt\publicApp\views.py indexpage views line:143] 返回首页数据
+[2018-03-22 18:06:41,358] [INFO] [D:\jfcn\lib\site-packages\django\core\servers\basehttp.py log_message basehttp line:124] "GET /public/index/ HTTP/1.1" 200 19770

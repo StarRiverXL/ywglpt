@@ -1,0 +1,57 @@
+{% extends 'base1.html' %}
+{% load staticfiles %}
+
+{% block page_content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2> {{ business }}业务系统 <small> 站点导航 </small></h2>
+                        {% include 'base_content_head1.html' %}
+                    </div>
+
+                    <div class="x_content">
+                        <div class="row">
+                            {% for site in site_nav_list %}
+                            <div class="col-md-55">
+                                <div class="thumbnail">
+                                    <div class="image view view-first">
+                                        <img style="width: 100%; display: block;" src="{{ site.img.url }}" alt="image" />
+                                        <div class="mask">
+                                            <p>{{ site.name }} 简介:
+                                                {{ site.introduction }}
+                                            </p>
+                                            <div class="tools tools-bottom">
+                                                <a href="#"><i class="fa fa-link"></i></a>
+                                                <a href="#"><i class="fa fa-pencil"></i></a>
+                                                <a href="#"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="caption">
+                                        <p>{{ site.url }}</p>
+                                    </div>
+                                    <h5><a href="{{ site.url }}" target="_blank">{{ site.name }}</a></h5>
+                                </div>
+                            </div>
+                            {% empty %}
+                                暂未查询到站点！
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}
+
+
+
+
+
+
+

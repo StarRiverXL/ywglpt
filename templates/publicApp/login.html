@@ -1,0 +1,114 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+    <title>登陆界面</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'publicApp/login/css/bootstrap.min.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'publicApp/login/css/ie10-viewport-bug-workaround.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'publicApp/login/css/signin.css' %}">
+
+    <link type="text/css" rel="stylesheet" href="{% static 'publicApp/login/css/xh-login-yzm.css' %}">
+
+    <script type="text/javascript" src="{% static 'publicApp/login/js/jquery_yzm.js' %}"></script>
+    <link rel="shortcut icon" href="{% static 'publicApp/imges/favicon.ico'  %}" />
+
+  </head>
+  <body>
+        <div class="container">
+            <form class="form-signin">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <input type="text" name="username" id="login_username" class="form-control" placeholder="username" required="" autofocus="">
+                <input type="password" name="password" id="login_password" class="form-control" placeholder="password" required="">
+                <!-- 设置验证码开始 -->
+                <dd class="yanzhengma">
+                    <span id="test" class="fl">验证码：</span>
+                    <input type="text" class="yzm fl" id="verify_code" name="verify_code" />
+                    <input type="hidden" id="verify_code_key" name="verify_code_key" value="{{ login_info_list.code_name }}" >
+                    <!--<img id="img_idaaaa" class="fl" src="/static/public/login/authCode/0bDQsa.png" />-->
+                    <img id="img_idaaaa" src="{{ login_info_list.code_img_path }}/{{ login_info_list.code_name }}.png"/>
+                    <a class="replase">换一张</a>
+                </dd>
+
+                <p class="yanzhengmahide" style="display: none"></p>
+                <!-- 设置验证码结束 -->
+                <div class="checkbox">
+                    <label><input type="checkbox" value="remember-me"> Remember me</label>
+                    <label><input type="checkbox" value="remember-me"> <a href="{% url 'public:register' %}">Registered users</a></label>
+                </div>
+                <input type="button" value="Sign in" class="btn btn-lg btn-primary btn-block denglu" />
+                <!--<button class="btn btn-lg btn-primary btn-block denglu" type="submit">Sign in</button>-->
+            </form>
+
+        <script>
+            $('.denglu').click(function(){
+//                console.log('用户名：',$("#login_username").val(),'密码：', $("#login_password").val());
+                if ($("#login_username").val() == '' || $('#login_password').val()=='' ){
+                    $(".yanzhengmahide").css({"display":"block"}).html("用户名或密码不能为空");
+                    return false;
+                }
+                else if($('#verify_code').val()==''){
+                    $(".yanzhengmahide").css({"display":"block"}).html("验证码不能为空");
+                    return false;
+                }
+                $.ajax({
+                     url:"{% url 'public:login_ajax' %}",
+                     type:"POST",
+                     data:{
+                        name:$("#login_username").val(),
+                        pwd:$("#login_password").val(),
+                        verify_code:$("#verify_code").val(),
+                        verify_code_key:$("#verify_code_key").val()
+                        },
+                     dataType:"json",
+                     success:function(data){
+                         console.log(data);
+                         if (data.status == true){
+                             window.location.href = "{% url 'public:index' %}";
+                         } else {
+                            $(".yanzhengmahide").css({"display":"block"}).html(data.failReason);
+                        }
+                     },
+                    error:function(data){
+                        console.log("ajax验证出现问题");
+                    }
+                })
+            });
+
+            $('.replase').click(function(){
+                $.ajax({
+                    url:"{% url 'public:login_replase_code' %}",
+                    type:"POST",
+                    dataType:"json",
+                    async: false,
+                    success:function(data){
+                        if (data.status == true){
+                            $("#img_idaaaa").attr("src",data.code_img_path + data.code_name + ".png");
+                            $("#verify_code_key").val(data.code_name);
+                        } else {
+                            console.log("ajax获取验证码失败");
+                        }
+                    },
+                    error:function(data){
+                        console.log("ajax获取验证码出现问题");
+                    }
+                })
+            });
+        </script>
+
+        {# 下面仅为测试使用 #}
+        <h6>{{ login_info_list.info }}</h6>
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <h6> messege框架的使用结果： {{ message }}</h6>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+  </body>
+</html>

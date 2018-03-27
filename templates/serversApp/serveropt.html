@@ -1,0 +1,258 @@
+{% extends 'base1.html' %}
+{% load staticfiles %}
+
+{% block head_content2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'serversApp/css/servers_index.css' %}" />
+    <script type="text/javascript" src="{% static 'serversApp/js/jquery_2.0.0.js' %}"></script>
+    <script type="application/javascript">
+            function OptType(Names){
+                for (var i=1;i<5;i++){
+                    var tempname="mune_x"+i;
+                    var NewsHot="optType"+i;
+                    if (Names==tempname){
+                        Nnews=document.getElementById(NewsHot);
+                        Nnews.style.cssText = "display:block";
+                    }else{
+                        Nnews=document.getElementById(NewsHot);
+                        Nnews.style.cssText = "display:none";
+                    }
+                }
+            }
+    </script>
+{% endblock head_content2 %}
+
+
+
+{% block page_content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3>公告&操作说明</h3>
+                        {% include 'base_content_head1.html' %}
+                    </div>
+
+                    <div style="padding: 0 5px 6px;float: left;clear: both;margin-top: 5px">
+                            <p>
+                            目前只支持如下操作<br>
+                            一、基础命令操作:   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            二、日志查询操作:   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            三、日志下载操作：   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>
+                            注：查询结果的显示受网络和数据量大小的影响，请耐心等待。若结果返回慢时，建议二次查询时减少控制数据量。如 head -1 xxx 、ping -c 2 xxx 等等.<br>
+                            注：操作时请注意不要都有多余的空格，检查命令时以单个空格作为分隔符。
+                            </p>
+                    </div>
+                </div>
+
+<h3 class="catalog"><span class="catalog_span">查询条件</span></h3>
+<div style="background-color: #fff;">
+    <br>
+    <div class="">
+        <a class="catalog_a">选择需要的操作：</a>
+        <select name="opt" class="catalog_a_select" onchange="OptType('mune_x'+this.value)">
+            <option value="1" >请选择</option>
+            <option value="2">基础命令操作</option>
+            <option value="3">日志查询操作</option>
+            <option value="4">日志下载操作</option>
+        </select>
+    </div>
+    <br>
+
+<div id="optType1" style="display:block;"></div>
+<div id="optType2" style="display:none;">
+    <!--<form action="{% url 'servers:serveropt' %}?opt=2" method="POST">-->
+    <form id="submitajax2">
+        <h4 class="submitajax_h4">基础命令操作</h4>
+        默认只支持如下操作，并请按照样例填写命令. 例如:<br>
+        ping -c 5 www.baidu.com  说明：-c 发送5次数据包 <br>
+        ls /xxx/xxx    说明：/xxx/xxx  需要查看的路径 <br>
+        telnet 10.10.10.10 8080 说明：10.10.10.10 为对应IP、8080 为对应端口、注意中间一个空格<br>
+        curl 请期待说明<br>
+        <hr style="border: 0.4px dashed #a8b0cc;"/><br>
+        选择基础命令：
+        <select name="base_cmd" class="submitajax_select_cmd">
+            <option value="">请选择</option>
+            <option value="ping">ping</option>
+            <option value="telnet">telnet</option>
+            <option value="ls">ls</option>
+            <option value="curl">curl</option>
+        </select>
+        机器IP：
+        <select name="IP" id="" class="submitajax_select_ip">
+            <option value="">请选择</option>
+            <option value="10.10.10.1">10.10.10.1 sit x1 系统</option>
+            <option value="10.10.10.2">10.10.10.2 sit x2 系统</option>
+            <option value="10.10.10.3">10.10.10.3 sit x3 系统</option>
+            <option value="10.10.10.4">10.10.10.4 sit x4 系统</option>
+        </select>
+        请输入需要执行的命令: <input type="text" name="base_cmd_content" placeholder="ping -c 5 www.baidu.com
+        具体参照上方说明填写" required class="submitajax_select_input"><br><br>
+        <dir class="submitajax_select_div">
+            <input class="submitajax2" type="button" value="查询">
+            <input class="submitajax2_1" type="button" value="xxxx">
+        </dir>
+    </form>
+</div>
+
+
+<div id="optType3" style="display:none;">
+    <form id="submitajax3">
+        <h4 class="submitajax_h4">日志查询操作</h4>
+        默认只支持如下四种操作，并请按照样例填写命令. 其中 /xx/xx.log 为日志文件路径，支持.log .out文件 例如:<br>
+        grep 'xxxx' -C 10 /xxx/xxx.log | head -100 说明：-n 显示行号、xxxx 需要过滤的关键字、-C 显示关键字前后行数(-A 后 -B 前)、| head -100 显示前100行<br>
+        grep 'xxxx' -C 10 /xxx/xxx.log | tail -100 说明：tail -100 显示后100行<br>
+        tail -n 3 /xx/xx.log 说明：-n 3 查看3行  <br>
+        head -n 3 /xx/xx.log  说明：-n 3 查看3行 <br><br>
+        选择查询方式:
+        <select name="log_query_type" class="submitajax_select_cmd">
+            <option value="">请选择</option>
+            <option value="grep">grep</option>
+            <option value="tail">tail</option>
+            <option value="head">head</option>
+        </select>
+        机器IP：
+        <select name="IP" class="submitajax_select_ip">
+            <option value="">请选择</option>
+            <option value="10.10.10.1">10.10.10.1 sit x1 系统</option>
+            <option value="10.10.10.2">10.10.10.2 sit x2 系统</option>
+            <option value="10.10.10.3">10.10.10.3 sit x3 系统</option>
+            <option value="10.10.10.4">10.10.10.4 sit x4 系统</option>
+        </select>
+        请输入需要执行的命令: <input type="text" name="log_query_cmd_content" placeholder=
+            "tail -5 /xx/xx.log 参照上方说明填写" class="submitajax_select_input" required><br>
+        <dir class="submitajax_select_div">
+            <input class="submitajax3" type="button" value="查询">
+            <input class="submitajax3_1" type="button" value="xxxx">
+        </dir>
+    </form>
+</div>
+
+<div id="optType4" style="display:none;">
+    <form id="submitajax4">
+        <h4 class="submitajax_h4">日志下载操作</h4>
+        该功能使用sed命令下载一小段日志。操作命令形式为：sed -n '100,130p' /xxx/xxx/a.log >> /tmp/xxx.log<br>
+        使用需填写操作日志绝对路径，如:[/xxx/xxx/xx.log]、开始行号如:[100]、结束行号如:[130]（行号可以通过查询操作中grep方式获取,每行开头默认显示）<br><br>
+        机器IP：
+        <select name="IP" class="submitajax_select_ip">
+            <option value="">请选择</option>
+            <option value="10.10.10.1">10.10.10.1 sit x1 系统</option>
+            <option value="10.10.10.2">10.10.10.2 sit x2 系统</option>
+            <option value="10.10.10.3">10.10.10.3 sit x3 系统</option>
+            <option value="10.10.10.4">10.10.10.4 sit x4 系统</option>
+        </select>
+        日志路径: <input type="search" name="log_download_path" placeholder="/xxx/xxxx/xxx.log" class="submitajax_select_input_path" required>
+        开始行号: <input type="search" name="log_download_begin_line" placeholder="100" class="submitajax_select_input_log" required>
+        结束行号: <input type="search" name="log_download_end_line" placeholder="130" class="submitajax_select_input_log" required><br>
+        <dir class="submitajax_select_div">
+            <input class="submitajax4" type="button" value="查询">
+            <input class="submitajax4_1" type="button" value="xxxx">
+        </dir>
+    </form>
+</div>
+
+</div>
+
+<div class="seaResult">
+    <h3 class="catalog"><span class="catalog_span">查询结果</span></h3>
+    <br>
+        <div class="img_box_hide">
+            <p id="ajax_return_server_content">
+                <a>请选择查询条件</a>
+            </p>
+        </div>
+        <img class="img_box" src="{% static 'serversApp/images/serveropt_loading.gif' %}" alt="" />
+</div>
+
+<script type="application/javascript">
+
+    function img(avg) {
+        var img_box=document.querySelector('.img_box');
+        var img_box_hide = document.querySelector('.img_box_hide');
+        if ( avg == "hide" ){
+            img_box_hide.style.display='none';
+            img_box.style.display='block';
+        }
+        else {
+            img_box.style.display='none';
+            img_box_hide.style.display='block';
+        }
+    }
+
+    $('.submitajax2').click(function(){
+        img('hide');
+    $.ajax({
+        url: "{% url 'servers:serveropt' %}?opt=2",
+        type: "POST",
+        dataType: "html",    // 定义接收返回类型
+        async: true,
+        data:$('#submitajax2').serialize(),  // 获取form表单所有内容
+        success:function(data){
+            img('show');
+            document.getElementById("ajax_return_server_content").innerHTML=data;
+        },
+        error:function(data){
+            console.log("ajax发送请求失败");
+        }
+    })
+});
+
+$('.submitajax3').click(function(){
+    img('hide');
+    $.ajax({
+        url: "{% url 'servers:serveropt' %}?opt=3",
+        type: "POST",
+        dataType: "html",    // 定义接收返回类型
+        async: true,
+        data:$('#submitajax3').serialize(),  // 获取form表单所有内容
+        success:function(data){
+            img('show');
+            document.getElementById("ajax_return_server_content").innerHTML=data;
+        },
+        error:function(data){
+            console.log("ajax发送请求失败");
+        }
+    })
+});
+
+$('.submitajax4').click(function(){
+    img('hide');
+    $.ajax({
+        url: "{% url 'servers:serveropt' %}?opt=4",
+        type: "POST",
+        dataType: "html",    // 定义接收返回类型
+        async: true,
+        data:$('#submitajax4').serialize(),  // 获取form表单所有内容
+        success:function(data){
+            img('show');
+            document.getElementById("ajax_return_server_content").innerHTML=data;
+        },
+        error:function(data){
+            console.log("ajax发送请求失败");
+        }
+    })
+});
+</script>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock page_content %}
+
+
+
+
+
+
+
+
+

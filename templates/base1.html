@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head_content %}
+    <title>运维管理平台</title>
+    <link href="{% static 'publicApp/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'publicApp/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'publicApp/css/green.css' %}" rel="stylesheet">
+    <link href="{% static 'publicApp/css/jqvmap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'publicApp/css/custom.min.css' %}" rel="stylesheet">
+    {% block head_content2 %}
+    {% endblock head_content2 %}
+{% endblock head_content %}
+
+{% block body_content %}
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="{% url 'public:index' %}" class="site_title"><i class="fa fa-paw"></i> <span>运维管理平台</span></a>
+                    </div>
+                <div class="clearfix"></div>
+
+                <!-- menu profile quick info 用户登陆检查 -->
+                <div class="profile clearfix">
+                    <div class="profile_pic">
+                        <img src="{% static 'publicApp/images/img.jpg' %}" alt="..." class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        {% if request.session.username %}
+                            <span>Welcome</span>
+                            <h2> {{ request.session.username }} </h2>
+                        {% else %}
+                            <a href="{% url 'public:login' %}"> <h2>请登陆</h2> </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
+
+                <br />
+
+                <!-- sidebar menu 目录部分-->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <h3>普通用户</h3>
+                        <ul class="nav side-menu">
+                            <li>
+                                <a href="{% url 'public:index' %}"><i class="fa fa-home"></i>主页</a>
+                            </li>
+
+                            <li>
+                                <a><i class="fa fa-desktop"></i> 实用功能 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                  <li><a href="{% url 'asset:asset' option='index' id=0 %}">资产管理</a></li>
+                                  <li><a href="{% url 'servers:appopt' option='index' %}">应用管理</a></li>
+                                  <li><a href="{% url 'ywdocument:index' %}">运维文档</a></li>
+                                  <li><a href="{% url 'servers:serveropt' %}">服务器管理</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a><i class="fa fa-laptop"></i> 站点导航 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="{% url 'public:urlindex' business='A' %}">A业务系统</a></li>
+                                    <li><a href="{% url 'public:urlindex' business='B' %}">B业务系统</a></li>
+                                    <li><a href="{% url 'public:urlindex' business='other' %}">其他系统</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a><i class="fa fa-clone"></i> 其他功能 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="{% url 'samllfun:address' %}">通讯录</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a><i class="fa fa-sitemap"></i> 目录等级 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="{% url 'public:errorpage' number=404 %}">一级目录</a>
+                                    <li><a>一级目录<span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li class="sub_menu"><a href="{% url 'public:errorpage' number=403 %}">二级目录</a></li>
+                                            <li><a href="{% url 'public:errorpage' number=500 %}">二级目录</a></li>
+                                            <li><a href="{% url 'public:errorpage' number=500 %}">二级目录</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="{% url 'public:errorpage' number=403 %}">一级目录</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons 左侧底部按钮组件-->
+                <div class="sidebar-footer hidden-small">
+                    <a data-toggle="tooltip" data-placement="top" title="Settings">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="Lock">
+                        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="Logout" href="{% url 'public:login' %}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <!-- /menu footer buttons -->
+            </div>
+        </div>
+
+            <!-- top navigation 顶部导航条-->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                          <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                  <img src="{% static 'publicApp/images/img.jpg' %}" alt="">
+                                    {% if request.session.username %}
+                                      {{ request.session.username }}
+                                    {% else %}
+                                        请登陆
+                                    {% endif %}
+                                  <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="javascript:;">项目</a></li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="badge bg-red pull-right">50%</span>
+                                            <span>设置</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="javascript:;">帮助</a></li>
+                                    {% if request.session.username %}
+                                        <li><a href="{% url 'public:login' %}"><i class="fa fa-sign-out pull-right"></i> 退出 </a></li>
+                                    {% else %}
+                                        <li><a href="{% url 'public:login' %}"><i class="fa fa-sign-out pull-right"></i> 登陆 </a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+
+                            <li role="presentation" class="dropdown">
+                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green">6</span>
+                                </a>
+                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                    <li>
+                                        <a>
+                                            <span class="image"><img src="{% static 'publicApp/images/img.jpg' %}" alt="Profile Image" /></span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a>
+                                          <span class="image"><img src="{% static 'publicApp/images/img.jpg' %}" alt="Profile Image" /></span>
+                                          <span>
+                                              <span>John Smith</span>
+                                              <span class="time">3 mins ago</span>
+                                          </span>
+                                          <span class="message">
+                                              Film festivals used to be do-or-die moments for movie makers. They were where...
+                                          </span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <div class="text-center">
+                                            <a>
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+
+            <!-- page content 页面详细内容-->
+            {% block page_content %}
+            {% endblock page_content %}
+            <!-- /page content -->
+
+            <!-- footer content 底部导航条-->
+            <footer>
+                <div class="pull-right">
+                  Gentelella - Bootstrap Admin Template by Colorlib. More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家"></a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank"></a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+    <script src="{% static 'publicApp/js/jquery.min.js' %}"></script>
+    <script src="{% static 'publicApp/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'publicApp/js/icheck.min.js' %}"></script>
+    <script src="{% static 'publicApp/js/skycons.js' %}"></script>
+    <script src="{% static 'publicApp/js/date.js' %}"></script>
+    <script src="{% static 'publicApp/js/jquery.vmap.js' %}"></script>
+    <script src="{% static 'publicApp/js/jquery.vmap.world.js' %}"></script>
+    <script src="{% static 'publicApp/js/jquery.vmap.sampledata.js' %}"></script>
+    <script src="{% static 'publicApp/js/custom.min.js' %}"></script>
+    {% block page_js %}
+    {% endblock page_js %}
+</body>
+{% endblock body_content %}
+

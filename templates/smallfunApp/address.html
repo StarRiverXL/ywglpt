@@ -1,0 +1,50 @@
+{% extends 'base1.html' %}
+{% block page_content %}
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>运维通讯录 <small>详情页面</small></h2>
+                {% include 'base_content_head1.html' %}
+            </div>
+            <div class="x_content">
+                <p>下面记录的信息仅供参考，如需更新，请联系管理员。</p>
+                <div class="table-responsive">
+                    <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                              <tr class="headings">
+                                  <th class="column-title">姓名 </th>
+                                  <th class="column-title">电话</th>
+                                  <th class="column-title">邮箱</th>
+                                  <th class="column-title">岗位</th>
+                                  <th class="column-title">QQ</th>
+                                  <th class="column-title">备注</th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              {% for i in address_yunwei_list %}
+                              <tr class="odd pointer">
+                                  <td class=" ">{{ i.name }}</td>
+                                  <td class=" ">{{ i.phone }}</td>
+                                  <td class=" ">{{ i.email }}</td>
+                                  <td class=" ">{{ i.position }}</td>
+                                  <td class=" ">{{ i.QQ }}</td>
+                                  <td class="a-right a-right ">{{ i.note }}</td>
+                              </tr>
+                              {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}
+
+
+
+
+
+
+
+

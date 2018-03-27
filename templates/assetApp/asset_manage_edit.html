@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资产编辑</title>
+</head>
+<body>
+    <form action="{% url 'asset:asset' option='edit_asset' id=asset.id %}" method="post">
+        <table border="4">
+            <caption>资产编辑</caption>
+            <tr>
+                <td>IP</td>
+                <td><input type="text" name="ip" value={{ asset.ip }}></td>
+            </tr>
+            <tr>
+                <td>主机名</td>
+                <td><input type="text" name="host_name" value={{ asset.host_name }}></td>
+            </tr>
+            <tr>
+                <td>所属项目</td>
+                <td><input type="text" name="project" value={{ asset.project }}></td>
+            </tr>
+            <tr>
+                <td>操作系统</td>
+                <td><input type="text" name="system" value={{ asset.system }}></td>
+            </tr>
+            <tr>
+                <td>CPU</td>
+                <td><input type="text" name="cpu" value={{ asset.cpu }}></td>
+            </tr>
+            <tr>
+                <td>内存(G)</td>
+                <td><input type="text" name="memory" value={{ asset.memory }}></td>
+            </tr>
+            <tr>
+                <td>硬盘(G)</td>
+                <td><input type="text" name="hard" value={{ asset.hard }}></td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td><input type="text" name="remark" value={{ asset.remark }}></td>
+            </tr>
+        </table>
+            <br>
+            <input type="submit" value="提交">
+    </form>
+            <a href="{% url 'asset:asset' option='index' id=0 %}">取消</a>
+</body>
+</html>
+
+
+

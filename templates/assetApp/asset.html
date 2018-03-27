@@ -1,0 +1,71 @@
+{% extends 'base1.html' %}
+{% load staticfiles %}
+
+{% block page_content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>资产管理 <small>详情页</small></h2>
+                        {% include 'base_content_head1.html' %}
+                    </div>
+                    <div style="padding: 0 5px 6px;float: left;clear: both;margin-top: 5px">
+                        <p class="text-muted font-13 m-b-30">
+                            资产管理可以对现有资源进行整合，进行编辑删除等操作，方便管理。
+                            <span>
+                                 <form class="search_form" role="search" method="get" action="{% url 'asset:asset' option='search' id=0 %}?pagenumber={{ page_condition.pagenumber }}">
+                                     <input type="search" class="search" name="asset_search" placeholder="搜索IP、主机名、项目..." required>
+                                     <input type="submit" class="searchBtn" value="搜索">
+                                 </form>
+                            </span>
+                        </p>
+                    </div>
+                    <!-- 加载返回数据 -->
+                    {% include "assetApp/asset_js_return_page.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //{# 解决展示行数搜索问题 #}
+    var selct=document.querySelector('.pages select');
+        selct.onchange=function(ev){
+            var ev=ev || window.event;
+            var targetVal=ev.target.value;
+            var xhr=null;
+            if(window.XMLHttpRequest){   // 创建对象
+                xhr=new XMLHttpRequest();
+                }else{
+                    xhr=new ActiveXObject("Microsoft.XMLHTTP"); // IE
+                }
+                xhr.open('GET','{% url "asset:asset" option="index" id=0 %}?&pagenumber_switch=1&pagenumber='+targetVal,true);
+                xhr.send();
+                xhr.onreadystatechange=function(){
+                    if(xhr.readyState==4 && xhr.status==200){
+//{#                    console.log(xhr.readyState);#}
+                        document.querySelector(".x_content").innerHTML=xhr.responseText;
+//{#                    console.log(a);#}
+//{#                    a.innerHTML=xhr.responseText;#}
+                    }
+                }
+            };
+
+    function delete_confirm(e)
+        {
+            if (event.srcElement.outerText == "删除")
+            {
+                event.returnValue = confirm("删除后不可恢复的，你确认要删除吗？");
+            }
+        }
+        document.onclick = delete_confirm;
+
+</script>
+
+{% endblock page_content %}
+
+
