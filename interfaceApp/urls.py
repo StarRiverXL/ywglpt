@@ -11,4 +11,6 @@ app_name = 'interface'
 urlpatterns = [
     url(r'^wenming/$', views.wenming, name='wenming'),    # 用户登陆
     url(r'^pxy/(?P<table>\w*)/$', views.pxy, name='pxy'),
+    url(r'^db/$', views.dbcontrol, name='dbcontrol'),
+    url(r'^mail/$', views.sendmail, name='sendmail')
 ]
